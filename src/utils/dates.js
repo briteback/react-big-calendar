@@ -1,7 +1,7 @@
 /* eslint no-fallthrough: 0 */
 import dateMath from 'date-arithmetic';
 import localizer from '../localizer';
-import { directions } from './constants';
+//import { directions } from './constants';
 
 const MILLI = {
   seconds: 1000,
@@ -51,7 +51,7 @@ let dates = Object.assign(dateMath, {
     return dates.eq(floor, date) ? floor : dates.add(floor, 1, unit)
   },
 
-  move(date, min, max, unit, direction){
+/*  move(date, min, max, unit, direction){
     let isUpOrDown = direction === directions.UP || direction === directions.DOWN
       , addUnit = isUpOrDown ? 'week' : 'day'
       , amount = isUpOrDown ? 4 : 1
@@ -65,7 +65,7 @@ let dates = Object.assign(dateMath, {
     return dates.inRange(newDate, min, max, 'day')
       ? newDate
       : date
-  },
+  },*/
 
   range(start, end, unit = 'day'){
     let current = start
