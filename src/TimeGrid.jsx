@@ -342,7 +342,7 @@ export default class TimeGrid extends Component {
     const timeGutter = this._gutters[this._gutters.length - 1];
 
     if (timeGutter) {
-      const pixelHeight = timeGutter.offsetHeight;
+      const pixelHeight = timeGutter.scrollHeight;
       const offset = Math.floor(factor * pixelHeight);
       const timeIndicator = this.refs.timeIndicator;
 
