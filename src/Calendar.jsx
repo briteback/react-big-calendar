@@ -17,7 +17,7 @@ import moveDate from './utils/move';
 import VIEWS from './Views';
 import Toolbar from './Toolbar';
 
-import { omit, defaults, transforms, mapValues } from 'lodash';
+import { omit, defaults, transform, mapValues } from 'lodash';
 /*import omit from 'lodash/object/omit';
 import defaults from 'lodash/object/defaults';
 import transform from 'lodash/object/transform';
