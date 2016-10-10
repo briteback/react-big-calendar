@@ -202,6 +202,7 @@ export default class TimeGrid extends Component {
         endAccessor={this.props.endAccessor}
         allDayAccessor={this.props.allDayAccessor}
         eventPropGetter={this.props.eventPropGetter}
+        selected={this.props.selected}
         onSelect={this._selectEvent}
         slots={this._slots}
         key={idx}
@@ -213,7 +214,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, segments, width) {
-    let { messages, rtl } = this.props;
+    let { messages, rtl, onSelectSlot } = this.props;
     let { isOverflowing } = this.state || {};
 
     let { levels } = eventLevels(segments);
@@ -221,6 +222,15 @@ export default class TimeGrid extends Component {
 
     if (isOverflowing)
       style[rtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px';
+
+    function handleSelectSlot({ start, end }) {
+      let slots = range.slice(start, end + 1)
+      notify(onSelectSlot, {
+        slots,
+        start: slots[0],
+        end: slots[slots.length - 1]
+      })
+    }
 
     return (
       <div
@@ -251,9 +261,10 @@ export default class TimeGrid extends Component {
               slots={range.length}
               container={()=> this.refs.allDay}
               selectable={this.props.selectable}
+              onSelectSlot={handleSelectSlot}
             />
             <div style={{ zIndex: 1, position: 'relative' }}>
-              { this.renderAllDayEvents(range, levels) }
+              {this.renderAllDayEvents(range, levels)}
             </div>
           </div>
         </div>
