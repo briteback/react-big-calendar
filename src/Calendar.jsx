@@ -114,7 +114,7 @@ let Calendar = React.createClass({
      * Callback fired when a calendar event is selected.
      *
      * ```js
-     * function(event: object)
+     * function(event: object, e: SyntheticEvent)
      * ```
      */
     onSelectEvent: PropTypes.func,
@@ -486,8 +486,9 @@ let Calendar = React.createClass({
 
   handleNavigate(action, newDate) {
     let { view, date, onNavigate } = this.props;
+    let ViewComponent = this.getView();
 
-    date = moveDate(action, newDate || date, view)
+    date = moveDate(action, newDate || date, ViewComponent)
 
     onNavigate(date, view)
 
@@ -508,8 +509,8 @@ let Calendar = React.createClass({
       this.props.onView(view)
   },
 
-  handleSelectEvent(event){
-    notify(this.props.onSelectEvent, event)
+  handleSelectEvent(...args){
+    notify(this.props.onSelectEvent, args)
   },
 
   handleSelectSlot(slotInfo){
