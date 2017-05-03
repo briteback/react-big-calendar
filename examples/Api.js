@@ -1,6 +1,7 @@
 import React from 'react';
-import metadata from 'component-metadata!react-big-calendar/Calendar';
-import transform from 'lodash/object/transform';
+import transform from 'lodash/transform';
+
+import metadata from 'component-metadata!react-big-calendar/lib/Calendar';
 
 function displayObj(obj){
   return JSON.stringify(obj, null, 2).replace(/"|'/g, '')
@@ -97,10 +98,11 @@ let Api = React.createClass({
 
           return i === (list.length - 1) ? current : current.concat(' | ');
         }, []);
-      case 'array':
+      case 'array': {
         let child = this.renderType({ type: type.value });
 
         return <span>{'array<'}{ child }{'>'}</span>;
+      }
       case 'enum':
         return this.renderEnum(type);
       case 'custom':

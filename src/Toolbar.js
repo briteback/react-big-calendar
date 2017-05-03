@@ -1,9 +1,20 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import cn from 'classnames';
 import message from './utils/messages';
 import { navigate } from './utils/constants';
 
-let Toolbar = React.createClass({
+class Toolbar extends React.Component {
+  static propTypes = {
+    view: PropTypes.string.isRequired,
+    views: PropTypes.arrayOf(
+      PropTypes.string,
+    ).isRequired,
+    label: PropTypes.node.isRequired,
+    messages: PropTypes.object,
+    onNavigate: PropTypes.func.isRequired,
+    onViewChange: PropTypes.func.isRequired,
+  }
 
   render() {
     let { messages, label } = this.props;
@@ -44,15 +55,15 @@ let Toolbar = React.createClass({
         </span>
       </div>
     );
-  },
+  }
 
-  navigate(action){
+  navigate = (action) => {
     this.props.onNavigate(action)
-  },
+  }
 
-  view(view){
+  view = (view) => {
     this.props.onViewChange(view)
-  },
+  }
 
   viewNamesGroup(messages) {
     let viewNames = this.props.views
@@ -71,6 +82,6 @@ let Toolbar = React.createClass({
       )
     }
   }
-});
+}
 
 export default Toolbar;

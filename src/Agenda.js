@@ -1,40 +1,51 @@
-import React, { PropTypes } from 'react';
-import message from './utils/messages';
-import localizer from './localizer'
-
-import dates from './utils/dates';
-import { navigate } from './utils/constants';
-import { accessor as get } from './utils/accessors';
-
+import PropTypes from 'prop-types';
+import React from 'react';
 import classes from 'dom-helpers/class';
 import getWidth from 'dom-helpers/query/width';
 import scrollbarSize from 'dom-helpers/util/scrollbarSize';
+
+import localizer from './localizer'
+import message from './utils/messages';
+import dates from './utils/dates';
+import { navigate } from './utils/constants';
+import { accessor as get } from './utils/accessors';
+import { accessor, dateFormat, dateRangeFormat } from './utils/propTypes';
 import { inRange } from './utils/eventLevels';
 
 
-let Agenda = React.createClass({
+class Agenda extends React.Component {
+  static propTypes = {
+    events: PropTypes.array,
+    date: PropTypes.instanceOf(Date),
+    length: PropTypes.number.isRequired,
+    titleAccessor: accessor.isRequired,
+    allDayAccessor: accessor.isRequired,
+    startAccessor: accessor.isRequired,
+    endAccessor: accessor.isRequired,
 
-  propTypes: {
+    agendaDateFormat: dateFormat,
+    agendaTimeFormat: dateFormat,
+    agendaTimeRangeFormat: dateRangeFormat,
+    culture: PropTypes.string,
+
+    components: PropTypes.object.isRequired,
     messages: PropTypes.shape({
       date: PropTypes.string,
       time: PropTypes.string,
-      event: PropTypes.string
     })
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      length: 30
-    };
-  },
+  static defaultProps = {
+    length: 30
+  };
 
   componentDidMount() {
     this._adjustHeader()
-  },
+  }
 
   componentDidUpdate() {
     this._adjustHeader()
-  },
+  }
 
   render() {
     let { length, date, events, startAccessor } = this.props;
@@ -75,9 +86,9 @@ let Agenda = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
-  renderDay(day, events, dayKey){
+  renderDay = (day, events, dayKey) => {
     let {
         culture, components
       , titleAccessor, agendaDateFormat } = this.props;
@@ -116,9 +127,9 @@ let Agenda = React.createClass({
         </tr>
       )
     }, [])
-  },
+  };
 
-  timeRangeLabel(day, event){
+  timeRangeLabel = (day, event) => {
     let {
         endAccessor, startAccessor, allDayAccessor
       , culture, messages, components } = this.props;
@@ -153,9 +164,9 @@ let Agenda = React.createClass({
         }
       </span>
     )
-  },
+  };
 
-  _adjustHeader() {
+  _adjustHeader = () => {
     let header = this.refs.header;
     let firstRow = this.refs.tbody.firstChild
 
@@ -182,8 +193,8 @@ let Agenda = React.createClass({
     else {
       classes.removeClass(header, 'rbc-header-overflowing')
     }
-  }
-});
+  };
+}
 
 Agenda.navigate = (date, action)=>{
   switch (action){
