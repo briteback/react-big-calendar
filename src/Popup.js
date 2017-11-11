@@ -41,7 +41,7 @@ class Popup extends React.Component {
   }
 
   render() {
-    let { events, selected, eventComponent, eventWrapperComponent, ...props } = this.props;
+    let { events, selected, eventComponent, eventWrapperComponent, ...rest } = this.props;
 
     let { left, width, top } = this.props.position
       , topOffset = (this.state || {}).topOffset || 0
@@ -56,12 +56,12 @@ class Popup extends React.Component {
     return (
       <div ref='root' style={style} className='rbc-overlay'>
         <div className='rbc-overlay-header'>
-          { localizer.format(props.slotStart, props.dayHeaderFormat, props.culture) }
+          { localizer.format(this.props.slotStart, this.props.dayHeaderFormat, props.culture) }
         </div>
         {
           events.map((event, idx) =>
             <EventCell key={idx}
-              {...props}
+              {...rest}
               event={event}
               eventComponent={eventComponent}
               eventWrapperComponent={eventWrapperComponent}

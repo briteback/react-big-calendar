@@ -12,10 +12,10 @@ class Day extends React.Component {
   };
 
   render() {
-    let { date, ...props } = this.props;
+    let { date, ...rest } = this.props;
 
     return (
-      <TimeGrid {...props} range={[dates.startOf(date, 'day')]} eventOffset={10} />
+      <TimeGrid {...rest} range={[dates.startOf(date, 'day')]} eventOffset={10} />
     );
   }
 }
