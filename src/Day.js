@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import dates from './utils/dates';
-import TimeGrid from './TimeGrid';
 import { navigate } from './utils/constants';
+import TimeGrid from './TimeGrid';
+import localizer  from './localizer';
 
 class Day extends React.Component {
   static propTypes = {
@@ -10,11 +12,10 @@ class Day extends React.Component {
   };
 
   render() {
-    let { date, ...rest } = this.props;
-    let { start, end } = Day.range(date)
+    let { date, ...props } = this.props;
 
     return (
-      <TimeGrid {...rest} start={start} end={end} eventOffset={10} />
+      <TimeGrid {...props} range={[dates.startOf(date, 'day')]} eventOffset={10} />
     );
   }
 }
@@ -33,10 +34,8 @@ Day.navigate = (date, action)=>{
 }
 
 
-Day.range = (date)=> {
-  date = dates.startOf(date, 'day')
-  return { start: date, end: date }
-}
+Day.title = (date, { formats, culture }) =>
+  localizer.format(date, formats.dayHeaderFormat, culture);
 
 
 export default Day
