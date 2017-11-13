@@ -17,9 +17,21 @@ function _format(localizer, formatter, value, format, culture) {
   return result
 }
 
+const newFormat = (localizer, formatter) => (value, format, culture) => {
+    let result = typeof format === 'function'
+    ? format(value, culture, localizer)
+    : formatter.call(localizer, value, format, culture)
+
+  invariant(result == null || typeof result === 'string'
+    , '`localizer format(..)` must return a string, null, or undefined')
+
+  return result
+}
+
 class DateLocalizer {
 
   constructor(spec) {
+    this.spec = spec;
     invariant(typeof spec.format === 'function'
       , 'date localizer `format(..)` must be a function')
     invariant(typeof spec.parse === 'function'
@@ -32,9 +44,11 @@ class DateLocalizer {
     this.formats = spec.formats
     this.startOfWeek = spec.firstOfWeek
 
-    this.format = (...args) => _format(this, spec.format, ...args)
+    //this.format = (...args) => _format(this, spec.format, ...args)
+    this.format = newFormat(this, spec.format);
 
-    this.parse = (value, format, culture) => {
+
+    /*this.parse = (value, format, culture) => {
       let result = spec.parse.call(this, value, format, culture)
 
       invariant(result == null
@@ -42,7 +56,16 @@ class DateLocalizer {
         , 'date localizer `parse(..)` must return a valid Date, null, or undefined')
 
       return result
-    }
+    }*/
+  }
+  parse = (value, format, culture) => {
+    let result = this.spec.parse.call(this, value, format, culture)
+
+    invariant(result == null
+      || (result instanceof Date && !isNaN(result.getTime()))
+      , 'date localizer `parse(..)` must return a valid Date, null, or undefined')
+
+    return result
   }
 }
 
